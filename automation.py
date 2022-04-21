@@ -22,10 +22,9 @@ for x in rows:
   poi_coord.append([float(x[2]), float(x[1])])
 
 URL = f"http://router.project-osrm.org/trip/v1/driving/121.081286,14.559503;{coordinates}121.081286,14.559503?overview=full&geometries=geojson"
-print(URL)
+# print(URL)
 r = requests.get(URL)
 
-# temp = [x for x in r.json()['waypoints']]
 
 waypoints = r.json()['waypoints']
 temp_rows = copy.deepcopy(rows)
@@ -39,8 +38,6 @@ for index, x in enumerate(waypoints):
   
 pprint.pprint(arrangement)
 
-
-
 data = np.array(r.json()['trips'][0]['geometry']['coordinates'])
 poi_data = np.array(poi_coord)
 pasig_np = np.array([14.5595, 121.08129])
@@ -48,7 +45,6 @@ pasig_np = np.array([14.5595, 121.08129])
 x, y = data.T
 poi_x, poi_y = poi_data.T
 pasig_x, pasig_y = pasig_np.T 
-# plt.plot(pasig_x, pasig_y, 'bo', color='r')
 plt.plot(121.08129,14.5595,'ro') 
 plt.plot(poi_x, poi_y, 'bo', color='g')
 plt.plot(x, y)
