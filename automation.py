@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 filename = sys.argv[1]
-print(filename)
+ # print(filename)
 rows = []
 with open(filename, 'r') as file:
     csvreader = csv.reader(file)
@@ -25,6 +25,7 @@ URL = f"http://router.project-osrm.org/trip/v1/driving/121.081286,14.559503;{coo
 # print(URL)
 r = requests.get(URL)
 
+print('Distance', r.json()['trips'][0]['distance'] / 1000, 'km')
 
 waypoints = r.json()['waypoints']
 temp_rows = copy.deepcopy(rows)
@@ -36,7 +37,10 @@ arrangement = [''] * len(temp_rows)
 for index, x in enumerate(waypoints):
   arrangement[x['waypoint_index']] = temp_rows[index][0]
   
-pprint.pprint(arrangement)
+print('\nOrder:')
+for x in arrangement:
+	print(f'-{x}')
+print()
 
 data = np.array(r.json()['trips'][0]['geometry']['coordinates'])
 poi_data = np.array(poi_coord)
@@ -46,7 +50,7 @@ x, y = data.T
 poi_x, poi_y = poi_data.T
 pasig_x, pasig_y = pasig_np.T 
 plt.plot(121.08129,14.5595,'ro') 
-plt.plot(poi_x, poi_y, 'bo', color='g')
+plt.plot(poi_x, poi_y, 'bo',  color='g')
 plt.plot(x, y)
 plt.show()
 
